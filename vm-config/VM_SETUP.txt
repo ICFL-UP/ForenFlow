@@ -1,0 +1,28 @@
+FRIaaS Verification VM Setup
+=============================
+VM Name: FRIaaS
+OS: Ubuntu 22.04 LTS
+RAM: 12 GB
+CPUs: 2
+Disk: 100 GB
+User: friaas
+
+Network Configuration
+---------------------
+NIC1 (enp0s3): NAT with port forwarding 2224 -> 22 (SSH)
+NIC2 (enp0s8): Bridged to host Wi-Fi, static IP 192.168.100.1/24
+
+Netplan: 01-netcfg.yaml -> /etc/netplan/01-netcfg.yaml
+  Requires: apt install network-manager
+  Apply: sudo netplan apply
+
+DevStack Configuration
+----------------------
+local.conf -> /opt/stack/devstack/local.conf
+  Branch: stable/2025.1
+  Uses legacy Neutron agents (not OVN)
+  Includes TaaS plugin
+
+SSH Access
+----------
+ssh -p 2224 friaas@127.0.0.1
